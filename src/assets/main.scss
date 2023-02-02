@@ -1,4 +1,4 @@
-$fa-font-path: "../webfonts";
+$fa-font-path: "./webfonts";
 @import "@fortawesome/fontawesome-free/scss/fontawesome.scss";
 @import "@fortawesome/fontawesome-free/scss/solid.scss";
 @import "@fortawesome/fontawesome-free/scss/brands.scss";
@@ -6,3 +6,24 @@ $fa-font-path: "../webfonts";
 @import "@fortawesome/fontawesome-free/scss/solid.scss";
 
 @import "bootstrap/scss/bootstrap";
+
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&display=swap");
+
+
+body {
+    font-family: "Open Sans", sans-serif;
+    color: #0c0c0c;
+    background-color: #ffffff;
+    overflow-x: hidden;
+}
+
+a,
+a:hover,
+a:focus {
+    text-decoration: none;
+}
+
+a:hover,
+a:focus {
+    color: initial;
+}
