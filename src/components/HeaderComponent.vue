@@ -106,6 +106,7 @@
 
         a {
             margin: 0 10px;
+            color: $black;
         }
 
         .user_link {
