@@ -9,12 +9,22 @@ $fa-font-path: "./webfonts";
 
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&display=swap");
 
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
 
 body {
     font-family: "Open Sans", sans-serif;
     color: #0c0c0c;
     background-color: #ffffff;
     overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
 }
 
 a,
@@ -26,4 +36,13 @@ a:focus {
 a:hover,
 a:focus {
     color: initial;
+}
+
+h1, h2 {
+    font-family: 'Dancing Script', cursive;
+}
+
+.is-visible {
+    min-height: 15vh;
+    object-position: right top;
 }
