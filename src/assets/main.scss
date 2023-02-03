@@ -38,6 +38,7 @@ a:focus {
     color: initial;
 }
 
+
 h1, h2 {
     font-family: 'Dancing Script', cursive;
 }
@@ -45,4 +46,15 @@ h1, h2 {
 .is-visible {
     min-height: 15vh;
     object-position: right top;
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+
 }
