@@ -1,17 +1,16 @@
 <template>
   <HeaderComponent/>
-<div>
-  <!-- <router-view></router-view> -->
-</div>
+    <router-view></router-view>
   <FooterComponent/>
 </template>
 
 <script>
 import FooterComponent from './components/FooterComponent.vue';
 import HeaderComponent from './components/HeaderComponent.vue';
+import HomePage from './pages/HomePage.vue';
 
   export default {
-    components: { HeaderComponent, FooterComponent }
+    components: { HeaderComponent, FooterComponent, HomePage }
 }
 </script>
 

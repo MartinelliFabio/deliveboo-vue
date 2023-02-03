@@ -1,11 +1,15 @@
 <template>
-    <div>
-    </div>
+    
 </template>
 
 <script>
+import HeroComponent from '../components/HeroComponent.vue';
+
     export default {
-        name: "HomePage"
+        name: "HomePage",
+        components: {
+            HeroComponent
+        }
     }
 </script>
 
