@@ -50,7 +50,17 @@ export default {
     name: "HeaderComponent",
     data() {
         return {
-            isMenuOpen: false
+            isMenuOpen: false,
+            navItems:[
+                {
+                    label: "Home",
+                    routeName: "Home",
+                },
+                {
+                    label: "Menu",
+                    routeName: "products",
+                },
+            ]
         }
     }
 }

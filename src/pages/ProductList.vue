@@ -12,7 +12,7 @@
         <li data-filter=".fries">Fries</li>
       </ul>
   <div class="row my-cont">
-    <div class="col-sm-6 col-lg-4" v-for="(product, i) in products" :key="i">
+    <div class="col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4" v-for="(product, i) in products" :key="i">
       <ProductCardComponent :product="product" />
     </div>
   </div>

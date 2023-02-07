@@ -1,6 +1,6 @@
 <template>
   <section class="food_section layout_padding mb-5">
-    <div class="container ">
+    <div class="container">
       <div class="filters-content">
         <div class="">
           <div class="all pizza">
@@ -10,12 +10,12 @@
                   <img src="../img/f3.png" alt="" />
                 </div>
                 <div class="detail-box">
-                  <h4 class="text-capitalize">{{ product.name }}</h4>
+                  <h5 class="text-capitalize">{{ product.name }}</h5>
                   <p>
-                    {{product.ingredient}}
+                    {{ product.ingredient }}
                   </p>
                   <div class="options">
-                    <h6>$20</h6>
+                    <h6 class="me-3">&euro;&nbsp;{{ product.price }}</h6>
                     <a href="">
                       <svg
                         version="1.1"
@@ -101,8 +101,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-
 $white: #ffffff;
 $black: #000000;
 $primary1: #ffbe33;
@@ -147,6 +145,7 @@ a:focus {
   border-radius: 15px;
   overflow: hidden;
   background: linear-gradient(to bottom, #f1f2f3 25px, $primary2 25px);
+  height: 410px;
 
   .img-box {
     background: #f1f2f3;
@@ -184,6 +183,10 @@ a:focus {
   .options {
     display: flex;
     justify-content: space-between;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 1rem;
 
     a {
       width: 40px;
