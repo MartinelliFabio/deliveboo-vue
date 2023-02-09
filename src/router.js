@@ -3,7 +3,7 @@ import HomePage from './pages/HomePage.vue';
 import ShopkeeperList from './pages/ShopkeeperList.vue';
 import NotFound from './pages/NotFound.vue';
 import SingleShop from './pages/SingleShop.vue';
-import AboutUs from './pages/AboutUs.vue'
+import AboutUs from './pages/AboutUs.vue';
 
 const router = createRouter({
     history: createWebHistory(),
