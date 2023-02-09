@@ -28,6 +28,11 @@ const router = createRouter({
             name: 'single-shop',
             component:SingleShop
         },
+        {
+            path: "/about",
+            name: "about",
+            component: AboutUs,
+        }
     ]
 })
 export { router };
