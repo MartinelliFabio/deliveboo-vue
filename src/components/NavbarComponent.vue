@@ -57,6 +57,10 @@ export default {
                     label: "Ristoranti",
                     routeName: "shopkeepers",
                 },
+                {
+                    label: "Chi Siamo",
+                    routeName: "about",
+                },
             ]
         }
     }
