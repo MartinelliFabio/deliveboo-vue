@@ -60,6 +60,10 @@ export default {
                     label: "Menu",
                     routeName: "products",
                 },
+                {
+                    label: "Chi Siamo",
+                    routeName: "about",
+                },
             ]
         }
     }

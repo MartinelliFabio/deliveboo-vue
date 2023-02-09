@@ -13,7 +13,7 @@
                   <h5 class="text-capitalize">{{ product.name }}</h5>
                   <p>
                     {{ product.ingredient }}
-                  </p>
+                </p>
                   <div class="options">
                     <h6 class="me-3">&euro;&nbsp;{{ product.price }}</h6>
                     <a href="">
