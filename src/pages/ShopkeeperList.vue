@@ -1,19 +1,21 @@
 <template>
   <HeroComponent :isVisible="false"></HeroComponent>
     <div class="d-flex justify-content-center mt-5">
-        <h2>Our Menu</h2>
+        <h2>Ristoranti</h2>
       </div>
 
-      <ul class="filters_menu d-flex justify-content-center">
+      <!-- <ul class="filters_menu d-flex justify-content-center">
         <li class="active" data-filter="*">All</li>
         <li data-filter=".burger">Burger</li>
         <li data-filter=".pizza">Pizza</li>
         <li data-filter=".pasta">Pasta</li>
         <li data-filter=".fries">Fries</li>
-      </ul>
-  <div class="row my-cont">
-    <div class="col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4" v-for="(product, i) in products" :key="i">
-      <ProductCardComponent :product="product" />
+      </ul> -->
+  <div class="row justify-content-around my-cont container">
+    <div class="col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4" v-for="(shopkeeper, i) in shopkeepers" :key="i">
+      <router-link :to="`shopkeepers/${shopkeeper.slug} `" >
+      <ShopkeeperCardComponent :shopkeeper="shopkeeper" />
+     </router-link>
     </div>
   </div>
 </template>
@@ -22,27 +24,36 @@
 import axios from "axios";
 import HeroComponent from "../components/HeroComponent.vue";
 import ProductCardComponent from "../components/ProductCardComponent.vue";
+import ShopkeeperCardComponent from "../components/ShopkeeperCardComponent.vue";
 import { store } from "../store.js";
 export default {
-  name: "ProductList",
-  components: { ProductCardComponent, HeroComponent },
+  name: "ShopkeeperList",
+  components: { ProductCardComponent, HeroComponent,ShopkeeperCardComponent },
   data() {
     return {
       store,
       products: [],
+      shopkeepers:[]
 
     };
   },
   methods: {
     getProducts() {
       axios.get(`${this.store.apiUrl}/products`).then((response) => {
-        // console.log(response.data.results);
+        console.log(response.data.results);
         this.products = response.data.results;
       });
     },
+    getShopkeepers() {
+      axios.get(`${this.store.apiUrl}/shopkeepers`).then((response) => {
+        console.log(response.data.results);
+        this.shopkeepers = response.data.results;
+      });
+    }
   },
   mounted() {
     this.getProducts();
+    this.getShopkeepers();
   },
 };
 </script>
@@ -55,7 +66,7 @@ $primary1: #ffbe33;
 $primary2: #222831;
 $textCol: #1f1f1f;
 .my-cont{
-    width: 50%;
+    // width: 50%;
     margin: auto;
     margin-top: 4rem;
 }
