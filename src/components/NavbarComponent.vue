@@ -10,18 +10,15 @@
                 </button>
                 <div class="collapse navbar-collapse" :class="isMenuOpen ? 'd-block' : ''">
                     <ul class="navbar-nav mx-auto">
-                        <li class="nav-item active">
+                        <!-- <li class="nav-item active">
                             <a class="nav-link" href="">Home <span class="sr-only">(current)</span></a>
+                        </li> -->
+                        <li  class="nav-item active"  v-for="(item, index) in navItems" :key="index">
+                            <router-link :to="{ name: item.routeName }" active-class="active " class=" nav-link">
+                                {{ item.label }}
+                            </router-link>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">Menu</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">About Us</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="">Conctact Us</a>
-                        </li>
+                        
                     </ul>
                     <div class="user_option">
                         <a href="" class="user_link">
@@ -47,18 +44,18 @@
 
 <script>
 export default {
-    name: "HeaderComponent",
+    name: "NavbarComponent",
     data() {
         return {
             isMenuOpen: false,
             navItems:[
                 {
                     label: "Home",
-                    routeName: "Home",
+                    routeName: "homepage",
                 },
                 {
-                    label: "Menu",
-                    routeName: "products",
+                    label: "Ristoranti",
+                    routeName: "shopkeepers",
                 },
                 {
                     label: "Chi Siamo",
@@ -72,6 +69,7 @@ export default {
 
 <style lang="scss" scoped>
 @use '../assets/partials/variables' as *;
+
 
 .header-section {
 
@@ -97,13 +95,19 @@ export default {
                 transition: all 0.3s;
             }
 
-            &:hover,
-            &.active {
+            &:hover
+            {
                 .nav-link {
                     color: $yellow;
                 }
             }
         }
+    }
+
+    .active{
+    
+        color: $yellow;
+                    
     }
 
     .nav_search-btn {

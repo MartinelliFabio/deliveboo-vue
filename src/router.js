@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import HomePage from './pages/HomePage.vue';
-import ProductList from './pages/ProductList.vue';
+import ShopkeeperList from './pages/ShopkeeperList.vue';
+import NotFound from './pages/NotFound.vue';
+import SingleShop from './pages/SingleShop.vue';
 
-import AboutUs from './pages/AboutUs.vue';
 const router = createRouter({
     history: createWebHistory(),
     routes: [
@@ -13,22 +14,20 @@ const router = createRouter({
         },
 
         {
-            path: "/products",
-            name: "products",
-            component: ProductList,
+            path: "/shopkeepers",
+            name: "shopkeepers",
+            component: ShopkeeperList ,
         },
-
-
-
-
-
         {
-            path: "/about",
-            name: "about",
-            component: AboutUs,
-        }
-
+            path: "/:pathMatch(.*)*",
+            name: "not-found",
+            component: NotFound ,
+        },
+        {
+            path:'/shopkeepers/:slug',
+            name: 'single-shop',
+            component:SingleShop
+        },
     ]
 })
-
 export { router };

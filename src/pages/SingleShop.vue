@@ -1,23 +1,36 @@
 <template>
-  <section class="food_section layout_padding mb-5">
-    <div class="container">
-      <div class="filters-content">
+    <HeroComponent :isVisible="false"></HeroComponent>
+   
+    
+        <h2 class="text-center mt-5 mb-5">prodotti</h2>
+        <!-- <ul v-if="shopkeeper.products">
+            <li v-for="(item,index) in shopkeeper.products">
+                {{ item.name }}
+            </li>
+        </ul> -->
+
+   
+    <section v-if="shopkeeper" class="food_section layout_padding mb-5">
+    <div  v-if="shopkeeper.products" class="container ">
+        <div class="row justify-content-around">
+
+        
+      <div v-for="(item,index) in shopkeeper.products" class="filters-content col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4">
         <div class="">
-          <div class="all pizza">
-            <div class="box">
+          <div  class="all pizza">
+            <div  class="box">
               <div>
                 <div class="img-box">
-                  <img :src="`${product.image}`" alt="" />
-                  <img :src="`${store.imageUrl}${product.image_link}`" :alt="product.name" class="card-image" />
-                  {{ product.image }}
+                    <img v-if="(`${item.image}`).includes('products_images')" :src="`${store.imagePath}${item.image}`" class="card-image" />
+                  <img v-else=""  :src="`${item.image}`" alt="" />
                 </div>
                 <div class="detail-box">
-                  <h5 class="text-capitalize">{{ product.name }}</h5>
+                  <h5 class="text-capitalize">{{ item.name }}</h5>
                   <p>
-                    {{ product.ingredient }}
-                </p>
+                    {{ item.ingredient }}
+                  </p>
                   <div class="options">
-                    <h6 class="me-3">&euro;&nbsp;{{ product.price }}</h6>
+                    <h6 class="me-3">&euro;&nbsp;{{ item.price }}</h6>
                     <a href="">
                       <svg
                         version="1.1"
@@ -81,25 +94,42 @@
         </div>
       </div>
     </div>
+    </div>
   </section>
 </template>
 
 <script>
-import axios from "axios";
-import { store } from "../store";
-
-export default {
-  name: "ProductCardComponent",
-
-  data() {
-    return {
-      store,
-    };
-  },
-  props: ["product"],
-  methods: {},
-  mounted() {},
-};
+import axios from 'axios';
+import { store } from '../store';
+import HeroComponent from "../components/HeroComponent.vue";
+    export default {
+        name:'SingleShop',
+        components: {  HeroComponent },
+        data(){
+            return{
+                store,
+                shopkeeper: null,
+                products: []
+            }
+        },
+        methods: {
+            getShop() {
+                axios.get(`${this.store.apiUrl}/shopkeepers/${this.$route.params.slug}`).then((response) => {
+                    // if (response.data.success) {
+                        // console.log(this.$route.params)
+                        console.log(response.data.results)
+                        this.shopkeeper = response.data.results;
+                        // this.products = response.data.products;
+                    // } else {
+                    //     this.$router.push({ name: 'not-found' });
+                    // }
+                });
+            },
+        },
+        mounted() {
+            this.getShop();
+        }
+    }
 </script>
 
 <style lang="scss" scoped>
