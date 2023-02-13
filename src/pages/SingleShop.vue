@@ -31,7 +31,7 @@
                   </p>
                   <div class="options">
                     <h6 class="me-3">&euro;&nbsp;{{ item.price }}</h6>
-                    <a href="">
+                    <a href="" @click.prevent="addToCart({name:item.name,price:item.price,quantity:1})">
                       <svg
                         version="1.1"
                         id="Capa_1"
@@ -109,7 +109,8 @@ import HeroComponent from "../components/HeroComponent.vue";
             return{
                 store,
                 shopkeeper: null,
-                products: []
+                products: [],
+                cartItems: JSON.parse(localStorage.getItem('cartItems')) || [],
             }
         },
         methods: {
@@ -125,6 +126,11 @@ import HeroComponent from "../components/HeroComponent.vue";
                     // }
                 });
             },
+            addToCart(item){
+      this.cartItems.push(item);
+      localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
+      console.log(this.cartItems)
+    }
         },
         mounted() {
             this.getShop();
@@ -176,6 +182,7 @@ a:focus {
   color: $white;
   border-radius: 15px;
   overflow: hidden;
+
   background: linear-gradient(to bottom, #f1f2f3 25px, $primary2 25px);
   height: 410px;
 
@@ -198,7 +205,7 @@ a:focus {
 
   .detail-box {
     padding: 25px;
-
+  
     h5 {
       font-weight: 600;
     }
@@ -239,8 +246,12 @@ a:focus {
 
   &:hover {
     .img-box {
+      z-index: -1;
+      overflow: hidden;
       img {
-        transform: scale(1.1);
+        transform: scale(1.5);
+     
+   
       }
     }
   }

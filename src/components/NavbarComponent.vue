@@ -25,7 +25,14 @@
                             <i class="fa fa-user" aria-hidden="true"></i>
                         </a>
                         <a class="cart_link" href="#">
-                            <i class="fa-solid fa-cart-shopping"></i>
+                            
+                            <router-link to="/cart" >
+                            <i class="fa-solid fa-cart-shopping">
+                              
+                              <span ref="cartCount" >{{ cartItems.length }} </span>
+                          
+                            </i>
+                        </router-link>
                         </a>
                         <form class="form-inline">
                             <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
@@ -48,6 +55,7 @@ export default {
     data() {
         return {
             isMenuOpen: false,
+            cartItems: JSON.parse(localStorage.getItem('cartItems')) || [],
             navItems:[
                 {
                     label: "Home",
@@ -61,9 +69,12 @@ export default {
                     label: "Chi Siamo",
                     routeName: "about",
                 },
+              
             ]
         }
-    }
+    },
+    
+
 }
 </script>
 
@@ -109,7 +120,7 @@ export default {
         color: $yellow;
                     
     }
-
+ 
     .nav_search-btn {
         width: auto;
         height: auto;
@@ -154,7 +165,7 @@ export default {
                 color: $yellow;
             }
         }
-
+     
         .order_online {
             display: inline-block;
             padding: 8px 30px;
@@ -220,7 +231,9 @@ export default {
 
     }
 }
-
+.header-section .user_option a{
+    color: white;
+}
 @media (max-width: 992px) {
     .header-section {
 

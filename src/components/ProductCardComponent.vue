@@ -18,7 +18,7 @@
                 </p>
                   <div class="options">
                     <h6 class="me-3">&euro;&nbsp;{{ product.price }}</h6>
-                    <a href="">
+                    <a href="" >
                       <svg
                         version="1.1"
                         id="Capa_1"
@@ -94,10 +94,13 @@ export default {
   data() {
     return {
       store,
+     
     };
   },
   props: ["product"],
-  methods: {},
+  methods: {
+   
+  },
   mounted() {},
 };
 </script>
