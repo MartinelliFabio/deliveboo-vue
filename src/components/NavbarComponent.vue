@@ -29,7 +29,7 @@
                             <router-link to="/cart" >
                             <i class="fa-solid fa-cart-shopping">
                               
-                              <span ref="cartCount" >{{ cartItems.length }} </span>
+                                <span ref="cartCount">{{ cartCount }}</span>
                           
                             </i>
                         </router-link>
@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import { reactive } from 'vue';
+import axios from 'axios';
 export default {
     name: "NavbarComponent",
     data() {
@@ -73,6 +75,20 @@ export default {
             ]
         }
     },
+    computed:{
+        cartCount(){
+            return this.cartItems.length;
+        }
+    },
+    watch:{
+        cartItems: {
+    handler: function(newCartItems) {
+      localStorage.setItem('cartItems', JSON.stringify(newCartItems));
+    },
+    deep: true
+  }
+    }
+
     
 
 }
