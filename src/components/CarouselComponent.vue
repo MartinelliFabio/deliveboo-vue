@@ -1,6 +1,6 @@
 <template>
-    <div class="container p-0">
-        <Carousel :autoplay="3000" :transition="500" :wrap-around="true">
+    <div class="container p-0" style="overscroll-behavior-y: contain;">
+        <Carousel :autoplay="2000" :wrap-around="true">
             <Slide v-for="slide in 3" :key="slide">
             <div class="carousel__item">
                 <div class="container">
@@ -23,7 +23,7 @@
             </div>
             </Slide> 
             <template #addons>
-                <Pagination />
+                <pagination />
             </template>
         </Carousel>
     </div>
@@ -55,7 +55,6 @@ h1 {
     margin-bottom: 15px;
     white-space: break-spaces;
 }
-
 
 .carousel {
     padding: 0;
