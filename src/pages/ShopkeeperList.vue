@@ -4,31 +4,9 @@
     <h2 style="font-size: 54px">Ristoranti</h2>
   </div>
 
-  <!-- <div class="container mt-3 d-flex justify-content-center">
-    <div class="form-check ms-2" v-for="type in types" :key="type.id">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        :value="type.id"
-        :id="type.id"
-        v-model="typeFilter"
-      />
-      <label class="form-check-label text-capitalize" :for="type.id">{{
-        type.name
-      }}</label>
-    </div>
-  </div> -->
-
   <div class="container mt-3 d-flex justify-content-center">
     <div class="form-check ms-2" v-for="type in types" :key="type.id">
-      <input
-        class="form-check-input"
-        type="checkbox"
-        name="types"
-        :value="type.id"
-        :id="type.id"
-        v-model="typeFilter"
-      />
+      <input class="form-check-input" type="checkbox" name="types" :value="type.id" :id="type.id" v-model="selectedType"/>
       <label class="form-check-label text-capitalize" :for="type.id">{{
         type.name
       }}</label>
@@ -36,11 +14,8 @@
   </div>
 
   <div class="row justify-content-around my-cont container">
-    <div
-      class="col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4"
-      v-for="shopkeeper in filteredShopkeepers"
-      :key="shopkeeper.id"
-    >
+    <div class="col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4" v-for="shopkeeper in filteredShopkeepers"
+      :key="shopkeeper.id">
       <router-link :to="`shopkeepers/${shopkeeper.slug} `">
         <ShopkeeperCardComponent :shopkeeper="shopkeeper" />
       </router-link>
@@ -51,81 +26,65 @@
 <script>
 import axios from "axios";
 import HeroComponent from "../components/HeroComponent.vue";
-import ProductCardComponent from "../components/ProductCardComponent.vue";
 import ShopkeeperCardComponent from "../components/ShopkeeperCardComponent.vue";
-import SidebarComponent from "../components/SidebarComponent.vue";
 import { store } from "../store.js";
-export default {
+
+export default { 
   name: "ShopkeeperList",
   components: {
-    ProductCardComponent,
     HeroComponent,
     ShopkeeperCardComponent,
-    SidebarComponent,
   },
   data() {
     return {
       store,
-      products: [],
       shopkeepers: [],
       types: [],
-      typeFilter: [],
+      selectedType: [],
     };
   },
-  methods: {
-    getProducts() {
-      axios.get(`${this.store.apiUrl}/products`).then((response) => {
-        // console.log(response.data.results);
-        this.products = response.data.results;
-      });
-    },
-
-    getShopkeepers() {
-      axios.get(`${this.store.apiUrl}/shopkeepers`).then((response) => {
-        // console.log(response.data.results);
-        this.shopkeepers = response.data.results;
-      });
-    },
-
-    getTypes() {
-      axios.get(`${this.store.apiUrl}/types`).then((response) => {
-        // console.log(response.data.results);
-        this.types = response.data.results;
-      });
-    },
-
-    filterShopkeepers() {
-      if (this.typeFilter.length === 0) {
+  computed: {
+    filteredShopkeepers() {
+      if (!this.selectedType.length) {
         return this.shopkeepers;
       } else {
-        const filteredShopkeepers = this.shopkeepers.filter((shopkeeper) => {
-          let check = false;
-          this.typeFilter.forEach((element) => {
-            if (shopkeeper.types.includes(element)) {
-              check = true;
-            }
-          });
-          return check;
+        return this.shopkeepers.filter((shopkeeper) => {
+          console.log(this.shopkeepers);
+          return shopkeeper.types.some(type => this.selectedType.includes(type.id));
         });
-        // const filteredShopkeepers = this.typeFilter.includes(this.shopkeepers.type_id);
-        console.log(filteredShopkeepers);
-        return filteredShopkeepers;
       }
     },
   },
-  mounted() {
-    this.getProducts();
-    this.getShopkeepers();
-    this.getTypes();
-  },
+  methods: {
+    getShopkeepers() {
+      const data = {
+        params: {
+          selectedType: '',
+        }
+      }
+      
+      axios.get(this.store.apiUrl + "/shopkeepers", data).then((response) => {
+        this.shopkeepers = response.data.results;
+        console.log(response.data.results)
 
-  computed: {
-    filteredShopkeepers() {
-      return this.filterShopkeepers();
+      });
     },
+
+    getShopkeeperTypes() {
+      axios.get(this.store.apiUrl + "/types").then((response) => {
+        this.types = response.data.results;
+        console.log(response.data.results)
+      });
+    },
+  },
+  mounted() {
+    this.getShopkeepers();
+    this.getShopkeeperTypes();
+    this.store.getTypes();
   },
 };
 </script>
+
 
 <style lang="scss" scoped>
 $white: #ffffff;

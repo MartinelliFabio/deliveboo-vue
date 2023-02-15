@@ -1,4 +1,5 @@
 import { reactive } from 'vue';
+import axios from 'axios';
 
 export const store = reactive({
 
@@ -46,5 +47,13 @@ export const store = reactive({
             menuOpen: false,
         },
     ],
-    cart: []
+    cart: [],
+    types: [],
+
+    getTypes: function () {
+        axios.get(`${this.apiUrl}/types`).then((res) => {
+            this.types = res.data.types;
+            // console.log(res.data.types)
+        })
+    },
 });
