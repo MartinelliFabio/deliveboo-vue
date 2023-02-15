@@ -1,5 +1,6 @@
 <template>
   <HeroComponent :isVisible="false"></HeroComponent>
+
   <div class="d-flex justify-content-center pt-4">
     <h2 style="font-size: 54px">Ristoranti</h2>
   </div>
@@ -12,6 +13,10 @@
       }}</label>
     </div>
   </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        <h2 class="display-4">Ristoranti</h2>
+      </div>
 
   <div class="row justify-content-around my-cont container">
     <div class="col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4" v-for="shopkeeper in filteredShopkeepers"

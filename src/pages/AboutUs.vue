@@ -2,13 +2,10 @@
   <HeroComponent :isVisible="false"></HeroComponent>
 
   <div class="container">
-    <h1
-      style="font-size: 56px; margin-top: 4rem"
-      class="text-center text-capitalize"
-    >
+    <h1 class="text-center text-capitalize my-5 display-4">
       chi siamo
     </h1>
-    <p class="mt-5 mb-5">
+    <p class="my-5">
       Lorem ipsum dolor, sit amet consectetur adipisicing elit. Recusandae,
       obcaecati velit modi minima neque, laudantium tempora iste cupiditate
       aspernatur non laboriosam dolor, nam unde placeat! Quam, suscipit dolorum.
@@ -105,10 +102,6 @@ export default {
 body {
   min-height: 100vh;
   background: linear-gradient(to bottom, #000428, #004683);
-}
-
-.container {
-  margin-top: 100px;
 }
 
 .container .row .col-lg-4 {
