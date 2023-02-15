@@ -1,21 +1,29 @@
 <template>
   <HeroComponent :isVisible="false"></HeroComponent>
+
+  <div class="d-flex justify-content-center pt-4">
+    <h2 style="font-size: 54px">Ristoranti</h2>
+  </div>
+
+  <div class="container mt-3 d-flex justify-content-center">
+    <div class="form-check ms-2" v-for="type in types" :key="type.id">
+      <input class="form-check-input" type="checkbox" name="types" :value="type.id" :id="type.id" v-model="selectedType"/>
+      <label class="form-check-label text-capitalize" :for="type.id">{{
+        type.name
+      }}</label>
+    </div>
+  </div>
+
     <div class="d-flex justify-content-center mt-5">
         <h2 class="display-4">Ristoranti</h2>
       </div>
 
-      <!-- <ul class="filters_menu d-flex justify-content-center">
-        <li class="active" data-filter="*">All</li>
-        <li data-filter=".burger">Burger</li>
-        <li data-filter=".pizza">Pizza</li>
-        <li data-filter=".pasta">Pasta</li>
-        <li data-filter=".fries">Fries</li>
-      </ul> -->
   <div class="row justify-content-around my-cont container">
-    <div class="col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4" v-for="(shopkeeper, i) in shopkeepers" :key="i">
-      <router-link :to="`shopkeepers/${shopkeeper.slug} `" >
-      <ShopkeeperCardComponent :shopkeeper="shopkeeper" />
-     </router-link>
+    <div class="col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4" v-for="shopkeeper in filteredShopkeepers"
+      :key="shopkeeper.id">
+      <router-link :to="`shopkeepers/${shopkeeper.slug} `">
+        <ShopkeeperCardComponent :shopkeeper="shopkeeper" />
+      </router-link>
     </div>
   </div>
 </template>
@@ -23,73 +31,101 @@
 <script>
 import axios from "axios";
 import HeroComponent from "../components/HeroComponent.vue";
-import ProductCardComponent from "../components/ProductCardComponent.vue";
 import ShopkeeperCardComponent from "../components/ShopkeeperCardComponent.vue";
 import { store } from "../store.js";
-export default {
+
+export default { 
   name: "ShopkeeperList",
-  components: { ProductCardComponent, HeroComponent,ShopkeeperCardComponent },
+  components: {
+    HeroComponent,
+    ShopkeeperCardComponent,
+  },
   data() {
     return {
       store,
-      products: [],
-      shopkeepers:[]
-
+      shopkeepers: [],
+      types: [],
+      selectedType: [],
     };
   },
+  computed: {
+    filteredShopkeepers() {
+      if (!this.selectedType.length) {
+        return this.shopkeepers;
+      } else {
+        return this.shopkeepers.filter((shopkeeper) => {
+          console.log(this.shopkeepers);
+          return shopkeeper.types.some(type => this.selectedType.includes(type.id));
+        });
+      }
+    },
+  },
   methods: {
-    getProducts() {
-      axios.get(`${this.store.apiUrl}/products`).then((response) => {
-        console.log(response.data.results);
-        this.products = response.data.results;
+    getShopkeepers() {
+      const data = {
+        params: {
+          selectedType: '',
+        }
+      }
+      
+      axios.get(this.store.apiUrl + "/shopkeepers", data).then((response) => {
+        this.shopkeepers = response.data.results;
+        console.log(response.data.results)
+
       });
     },
-    getShopkeepers() {
-      axios.get(`${this.store.apiUrl}/shopkeepers`).then((response) => {
-        console.log(response.data.results);
-        this.shopkeepers = response.data.results;
+
+    getShopkeeperTypes() {
+      axios.get(this.store.apiUrl + "/types").then((response) => {
+        this.types = response.data.results;
+        console.log(response.data.results)
       });
-    }
+    },
   },
   mounted() {
-    this.getProducts();
     this.getShopkeepers();
+    this.getShopkeeperTypes();
+    this.store.getTypes();
   },
 };
 </script>
 
-<style lang="scss" scoped>
 
+<style lang="scss" scoped>
 $white: #ffffff;
 $black: #000000;
 $primary1: #ffbe33;
 $primary2: #222831;
 $textCol: #1f1f1f;
-.my-cont{
-    // width: 50%;
-    margin: auto;
-    margin-top: 4rem;
+.my-cont {
+  // width: 50%;
+  margin: auto;
+  margin-top: 2rem;
 }
 
 .filters_menu {
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    list-style-type: none;
-    margin: 45px 0 20px 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style-type: none;
+  margin: 45px 0 20px 0;
 
-    li {
-      padding: 7px 25px;
-      cursor: pointer;
-      border-radius: 25px;
+  li {
+    padding: 7px 25px;
+    cursor: pointer;
+    border-radius: 25px;
 
-      &.active {
-        background-color: $primary2;
-        color: $white;
-      }
+    &.active {
+      background-color: $primary2;
+      color: $white;
     }
   }
+}
 
-
+.my-position {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
 </style>
