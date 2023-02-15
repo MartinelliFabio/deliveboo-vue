@@ -24,16 +24,13 @@
                         <a href="" class="user_link">
                             <i class="fa fa-user" aria-hidden="true"></i>
                         </a>
-                        <a class="cart_link" href="#">
+                        <router-link to="/cart">
+                            <span class="cart_link">
+                                <i class="fa-solid fa-cart-shopping"></i> 
+                                <sup class="ms-1 fs-6 quantity-order">{{ store.cartItems.length }}</sup>
+                            </span>
                             
-                            <router-link to="/cart" >
-                            <i class="fa-solid fa-cart-shopping">
-                              
-                                <span ref="cartCount">{{ cartCount }}</span>
-                          
-                            </i>
                         </router-link>
-                        </a>
                         <form class="form-inline">
                             <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
                                 <i class="fa fa-search" aria-hidden="true"></i>
@@ -50,14 +47,13 @@
 </template>
 
 <script>
-import { reactive } from 'vue';
-import axios from 'axios';
+import { store } from '../store';
 export default {
     name: "NavbarComponent",
     data() {
         return {
+            store,
             isMenuOpen: false,
-            cartItems: JSON.parse(localStorage.getItem('cartItems')) || [],
             navItems:[
                 {
                     label: "Home",
@@ -75,22 +71,6 @@ export default {
             ]
         }
     },
-    computed:{
-        cartCount(){
-            return this.cartItems.length;
-        }
-    },
-    watch:{
-        cartItems: {
-    handler: function(newCartItems) {
-      localStorage.setItem('cartItems', JSON.stringify(newCartItems));
-    },
-    deep: true
-  }
-    }
-
-    
-
 }
 </script>
 
@@ -155,7 +135,7 @@ export default {
         align-items: center;
 
         a {
-            margin: 0 10px;
+            margin: 0 12px;
             color: $black;
         }
 
@@ -179,6 +159,10 @@ export default {
 
             &:hover {
                 color: $yellow;
+            }
+
+            .quantity-order {
+                color: $primary1;
             }
         }
      

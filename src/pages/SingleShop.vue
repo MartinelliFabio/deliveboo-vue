@@ -2,7 +2,7 @@
   <HeroComponent :isVisible="false"></HeroComponent>
  
   
-      <h2 class="text-center mt-5 mb-5">prodotti</h2>
+      <h2 class="text-center text-capitalize my-5 display-4">prodotti</h2>
       <!-- <ul v-if="shopkeeper.products">
           <li v-for="(item,index) in shopkeeper.products">
               {{ item.name }}
@@ -15,13 +15,13 @@
       <div class="row justify-content-around">
 
       
-    <div v-for="(item,index) in shopkeeper.products" class="filters-content col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4">
+    <div v-for="(item, i) in shopkeeper.products" class="filters-content col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4">
       <div class="">
         <div  class="all pizza">
           <div  class="box">
             <div>
               <div class="img-box">
-                  <img v-if="(`${item.image}`).includes('products_images')" :src="`${store.imagePath}${item.image}`" class="card-image" />
+                <img v-if="(`${item.image}`).includes('products_images')" :src="`${store.imagePath}${item.image}`" class="card-image" />
                 <img v-else=""  :src="`${item.image}`" alt="" />
               </div>
               <div class="detail-box">
@@ -31,7 +31,7 @@
                 </p>
                 <div class="options">
                   <h6 class="me-3">&euro;&nbsp;{{ item.price }}</h6>
-                  <a href="" @click.prevent=" addToCart(item)">
+                  <a href="" :disabled="vueLocalStorage.includes(item.slug)" @click.prevent="addToCartId(item)">
                     <svg
                       version="1.1"
                       id="Capa_1"
@@ -103,118 +103,108 @@ import axios from 'axios';
 import { store } from '../store';
 import HeroComponent from "../components/HeroComponent.vue";
 import Swal from 'sweetalert2';
-// const props = defineProps({
-//         item: {
-//             type: Object,
-//             required: true
-//         }
-//     });
+import CartComponent from "../components/CartComponent.vue";
+
   export default {
       name:'SingleShop',
-      components: {  HeroComponent },
+      components: { HeroComponent, CartComponent },
       data(){
           return{
               store,
               shopkeeper: null,
               products: [],
-              cartItems: JSON.parse(localStorage.getItem('cartItems')) || [],
+              vueLocalStorage: ''
           }
+      },
+      watch: {
+        'store.cartItems': {
+          handler() {
+            this.getStorageKeys()
+          },
+          deep: true
+        }
+      },
+      mounted() {
+        this.getShop();
+        store.cartItems = this.getAllCart
+        this.getStorageKeys()
+      },
+      computed: {
+        getAllCart() {
+          let storage = []
+          let keys = Object.keys(localStorage)
+          for (let i = 0; i < keys.length; i++) {
+            storage.push(JSON.parse(localStorage.getItem(keys[i])))
+          }
+          return storage;
+        },
       },
       methods: {
           getShop() {
               axios.get(`${this.store.apiUrl}/shopkeepers/${this.$route.params.slug}`).then((response) => {
-                  // if (response.data.success) {
-                      // console.log(this.$route.params)
-                      console.log(response.data.results)
-                      this.shopkeeper = response.data.results;
-                      // this.products = response.data.products;
-                  // } else {
-                  //     this.$router.push({ name: 'not-found' });
-                  // }
+                // console.log(response.data.results)
+                this.shopkeeper = response.data.results;
               });
           },
-           addToCart(item) {
-            let index = this.cartItems.findIndex(product => product.id === item.id);
-            if(index !== -1) {
-              this.products[index].quantity += 1;
+          addToCartId(item) {
+            if(localStorage.length) {
+              const keys = Object.keys(localStorage)
+              const shopkeeperId = JSON.parse(localStorage.getItem(keys[0])).shopkeeper_id
+              if(item.shopkeeper_id != shopkeeperId) {
+                this.sendError()
+                return
+              } else {
+                this.addToCart(item)
+                return
+              }
+            }
+            this.addToCart(item)
+          },
+          addToCart(item) {
+            let index = store.cartItems.findIndex(product => product.slug === item.slug);
+            if (index !== -1) {
+              store.cartItems[index].quantity += 1;
+              localStorage.setItem(item.slug, JSON.stringify(store.cartItems[index]));
               Swal.fire({
-                position: 'top-end',
+                position: 'center',
                 icon: 'success',
-                title: 'Your item has been updated',
+                title: 'Il piatto è stato aggiornato',
                 showConfirmButton: false,
                 timer: 1500
               });
-            }else {
-              item.quantity = 1;
-              this.cartItems.push(item);
-              localStorage.setItem('cartItems', JSON.stringify(this.cartItems));
+            } else {
+              item.quantity = 1
+              store.cartItems.push(item)
+              localStorage.setItem(item.slug, JSON.stringify(item))
               Swal.fire({
-                position: 'top-end',
+                position: 'center',
                 icon: 'success',
-                title: 'Your item has been saved',
+                title: 'Il piatto è stato aggiunto all\'ordine',
                 showConfirmButton: false,
                 timer: 1500
               });
-              console.log(this.cartItems.length)
-              console.log(this.cartItems)
             }
-        }    
-    },
-    incrementQ(item) {
-        let index = this.cartItems.findIndex(product => product.id === item.id);
-        if(index !== -1) {
-            this.cartItems[index].quantity += 1;
+          },
+          sendError() {
             Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Your item has been updated',
-                showConfirmButton: false,
-                timer: 1500
+              position: 'center',
+              icon: 'error',
+              title: 'Non puoi ordinare da due ristoranti diversi',
+              showConfirmButton: false,
+              timer: 2000
             });
-        }
-    },
-    decrementQ(item) {
-        let index = this.cartItems.findIndex(product => product.id === item.id);
-        if(index !== -1) {
-            this.cartItems[index].quantity -= 1;
-            if(this.cartItems[index].quantity === 0){
-                this.cartItems = this.cartItems.filter(product => product.id !== item.id);
-            }
-            Swal.fire({
-                position: 'top-end',
-                icon: 'success',
-                title: 'Your item has been updated',
-                showConfirmButton: false,
-                timer: 1500
-            });
-        }
-    },
-    removeFromCart(item) {
-        this.cartItems = this.cartItems.filter(product => product.id !== item.id);
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: 'Your item has been removed',
-          showConfirmButton: false,
-          timer: 1500
-        });
-    }
-          
-  
-     ,
-      mounted() {
-          this.getShop();
-      }
+          },
+          getStorageKeys() {
+            this.vueLocalStorage = Object.keys(localStorage)
+          }
+    },    
   }
 
 </script>
 
 <style lang="scss" scoped>
-$white: #ffffff;
-$black: #000000;
-$primary1: #ffbe33;
-$primary2: #222831;
-$textCol: #1f1f1f;
+@use '../assets/partials/variables' as *;
+
 a,
 a:hover,
 a:focus {
@@ -252,17 +242,19 @@ overflow: hidden;
 background: linear-gradient(to bottom, #f1f2f3 25px, $primary2 25px);
 height: 410px;
 .img-box {
-  background: #f1f2f3;
+  background: white;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 215px;
-  border-radius: 0 0 0 45px;
-  margin: -1px;
-  padding: 25px;
+  border-radius: 15px 15px 0 45px;
+  border: 1px solid $primary2;
+  cursor: pointer;
+  overflow: hidden;
   img {
-    max-width: 100%;
-    max-height: 145px;
+    overflow: hidden;
+    // width: 100%;
+    height: 200px;
     transition: all 0.2s;
   }
 }
@@ -306,7 +298,7 @@ height: 410px;
     z-index: -1;
     overflow: hidden;
     img {
-      transform: scale(1.5);
+      transform: scale(1.2);
    
  
     }

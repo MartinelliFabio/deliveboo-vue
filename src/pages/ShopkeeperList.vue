@@ -1,7 +1,7 @@
 <template>
   <HeroComponent :isVisible="false"></HeroComponent>
     <div class="d-flex justify-content-center mt-5">
-        <h2>Ristoranti</h2>
+        <h2 class="display-4">Ristoranti</h2>
       </div>
 
       <!-- <ul class="filters_menu d-flex justify-content-center">
