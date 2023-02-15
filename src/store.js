@@ -48,12 +48,4 @@ export const store = reactive({
         },
     ],
     cart: [],
-    types: [],
-
-    getTypes: function () {
-        axios.get(`${this.apiUrl}/types`).then((res) => {
-            this.types = res.data.types;
-            // console.log(res.data.types)
-        })
-    },
 });
