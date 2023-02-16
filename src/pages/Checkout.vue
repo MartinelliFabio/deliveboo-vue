@@ -25,7 +25,7 @@
             </div>
             <div>
                 <label for="price_tot">Importo Totale</label>
-                <input type="number" id="price_tot" disabled>
+                <input type="text" id="price_tot" :value="{{ store.priceTotLocal }}" disabled>
             </div>
             <button type="submit">Invia ordine</button>
         </form>

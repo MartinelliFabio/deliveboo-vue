@@ -48,7 +48,7 @@
         </div>
         <div class="text-center my-5" v-if="store.cartItems.length >= 1"> 
             <button class="button btn-hover me-4" @click="clearCart()">Resetta</button>
-            <router-link to="/checkout">
+            <router-link to="/checkout" @click="priceTotLocal()">
                 <button class="button btn-hover">Procedi all'ordine</button>
             </router-link>
         </div>
@@ -88,6 +88,9 @@ import HeroComponent from "../components/HeroComponent.vue";
             clearCart() {
                 localStorage.clear()
                 store.cartItems = [];
+            },
+            priceTotLocal(){
+                store.priceTotLocal = this.totCart();
             }
         },
         computed: {
