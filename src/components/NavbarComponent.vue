@@ -36,9 +36,11 @@
                                 <i class="fa fa-search" aria-hidden="true"></i>
                             </button>
                         </form>
-                        <a href="" class="order_online">
-                            Order Online
-                        </a>
+                        <router-link to="/checkout">
+                            <a href="" class="order_online">
+                                Order Online
+                            </a>
+                        </router-link>
                     </div>
                 </div>
             </nav>
@@ -67,7 +69,6 @@ export default {
                     label: "Chi Siamo",
                     routeName: "about",
                 },
-              
             ]
         }
     },

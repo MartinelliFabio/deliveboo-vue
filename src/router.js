@@ -4,7 +4,8 @@ import ShopkeeperList from './pages/ShopkeeperList.vue';
 import NotFound from './pages/NotFound.vue';
 import SingleShop from './pages/SingleShop.vue';
 import AboutUs from './pages/AboutUs.vue';
-import carrello from './components/CartComponent.vue'
+import carrello from './components/CartComponent.vue';
+import checkout from './pages/Checkout.vue';
 
 const router = createRouter({
     history: createWebHistory(),
@@ -39,6 +40,11 @@ const router = createRouter({
             path: "/cart",
             name: "cart",
             component: carrello,
+        },
+        {
+            path: "/checkout",
+            name: "checkout",
+            component: checkout,
         },
     ]
 })

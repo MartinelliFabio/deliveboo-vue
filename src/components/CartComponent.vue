@@ -1,40 +1,58 @@
 <template>
-  <HeroComponent :isVisible="false"></HeroComponent>
-
+    <HeroComponent :isVisible="false"></HeroComponent>
     <div class="cart container d-flex flex-column py-4">
-        <h2 class="text-center my-4 display-4">I tuoi Ordini</h2>
+        <h2 class="text-center my-4 display-4">Il tuo Ordine</h2>
         <div class="row mb-5 justify-content-around" v-if="store.cartItems.length">
-            <div v-for="(item, i) in store.cartItems" class="cart-item col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4">
-                <div class="box">
-                    <div class="img-box">
-                        <img v-if="(`${item.image}`).includes('products_images')" :src="`${store.imagePath}${item.image}`" class="card-image" />
-                        <img v-else="" :src="`${item.image}`" alt="" />
-                    </div>
-                    <div class="options">
-                        <div class="text-capitalize my-3 p-2">
-                            <h5 class="text-capitalize">{{ item.name }}</h5>
-                            <p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Quantità</th>
+                            <th>Immagine</th>
+                            <th>Prodotto</th>
+                            <th>Ingredienti</th>
+                            <th>Prezzo cad.</th>
+                        </tr>
+                    </thead>
+                    <tbody v-for="(item, i) in store.cartItems">
+                        <tr>
+                            <td class="container-fluid w-25">
+                                <button class="button p-3" @click="decrementQ(item, i)"> - </button>
+                                <span class="mx-3 fs-5">{{ item.quantity }}</span>
+                                <button class="button p-3" @click="incrementQ(item, i)"> + </button>
+                            </td>
+                            <td class="container-fluid w-25">
+                                <img v-if="(`${item.image}`).includes('products_images')" :src="`${store.imagePath}${item.image}`" class="card-image image-fluid" />
+                                <img v-else="" :src="`${item.image}`" alt="" />
+                            </td>
+                            <td class="text-capitalize container-fluid w-25">
+                                {{ item.name }}
+                            </td>
+                            <td class="container-fluid w-25">
                                 {{ item.ingredient }}
-                            </p>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center box-button">
-                            <button class="button fs-5" @click="decrementQ(item, i)"> - </button>
-                            <span class="mx-4 fs-5">{{ item.quantity }}</span>
-                            <button class="button fs-5" @click="incrementQ(item, i)"> + </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            </td>
+                            <td>
+                                € {{ item.price }}
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4"></th>
+                            <th>Tot : €{{ totCart }}</th>
+                        </tr>
+                    </tfoot>
+                </table>
         </div>
         <div v-else class="no-orders d-flex align-items-center justify-content-center">
             <h5 class="text-center">Non ci sono ordini</h5>
         </div>
         <div class="text-center my-5" v-if="store.cartItems.length >= 1"> 
             <button class="button btn-hover me-4" @click="clearCart()">Resetta</button>
-            <button class="button btn-hover">Compra</button>
+            <router-link to="/checkout">
+                <button class="button btn-hover">Procedi all'ordine</button>
+            </router-link>
         </div>
     </div>
-       
 </template>
 
 <script>
@@ -73,18 +91,20 @@ import HeroComponent from "../components/HeroComponent.vue";
             }
         },
         computed: {
-            getAllCart() {
-                let storage = []
-                let keys = Object.keys(localStorage)
-                for (let i = 0; i < keys.length; i++) {
-                    storage.push(JSON.parse(localStorage.getItem(keys[i])))
-                }
-                return storage;
+            // getAllCart() {
+            //     let storage = []
+            //     let keys = Object.keys(localStorage)
+            //     for (let i = 0; i < keys.length; i++) {
+            //         storage.push(JSON.parse(localStorage.getItem(keys[i])))
+            //     }
+            //     return storage;
+            // },
+            totCart(){
+                return (store.cartItems.reduce((total, item) => total + (item.price * item.quantity) , 0)).toFixed(2);
             },
-
         },
         mounted() {
-            store.cartItems = this.getAllCart
+            // store.cartItems = this.getAllCart
         }
     }
 </script>
@@ -127,7 +147,7 @@ import HeroComponent from "../components/HeroComponent.vue";
     .button {
         appearance: none;
         background-color: $primary1;
-        border: 2px solid $black;
+        border: 1px solid $black;
         border-radius: 15px;
         box-sizing: border-box;
         color: #FFFFFF;
