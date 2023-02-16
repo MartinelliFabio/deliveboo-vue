@@ -4,7 +4,7 @@
   <div class="d-flex justify-content-center pt-4">
     <h2 style="font-size: 54px">Ristoranti</h2>
   </div>
-
+  <!-- <div><LoaderComponent></LoaderComponent></div> -->
   <div class="container mt-3 d-flex justify-content-center d-flex flex-wrap">
     <div class="form-check ms-2 " v-for="type in types" :key="type.id">
       <input class="form-check-input" type="checkbox" name="types" :value="type.id" :id="type.id" v-model="selectedType"/>
@@ -28,6 +28,7 @@
 import axios from "axios";
 import HeroComponent from "../components/HeroComponent.vue";
 import ShopkeeperCardComponent from "../components/ShopkeeperCardComponent.vue";
+import LoaderComponent from "../components/LoaderComponent.vue";
 import { store } from "../store.js";
 
 export default { 
@@ -35,6 +36,7 @@ export default {
   components: {
     HeroComponent,
     ShopkeeperCardComponent,
+    LoaderComponent
   },
   data() {
     return {
@@ -50,7 +52,7 @@ export default {
         return this.shopkeepers;
       } else {
         return this.shopkeepers.filter((shopkeeper) => {
-          console.log(this.shopkeepers);
+          // console.log(this.shopkeepers);
           return shopkeeper.types.some(type => this.selectedType.includes(type.id));
         });
       }
@@ -74,7 +76,7 @@ export default {
       
       axios.get(this.store.apiUrl + "/shopkeepers", data).then((response) => {
         this.shopkeepers = response.data.results;
-        console.log(response.data.results)
+        // console.log(response.data.results)
 
       });
     },
@@ -82,7 +84,7 @@ export default {
     getShopkeeperTypes() {
       axios.get(this.store.apiUrl + "/types").then((response) => {
         this.types = response.data.results;
-        console.log(response.data.results)
+        // console.log(response.data.results)
       });
     },
   },
