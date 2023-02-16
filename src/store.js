@@ -18,7 +18,6 @@ export const store = reactive({
         {
             title: 'About',
             voices: [
-
                 'About',
                 'Careers',
                 'Glossary',
@@ -48,9 +47,9 @@ export const store = reactive({
             menuOpen: false,
         },
     ],
-
     cart: [],
     cartItems: JSON.parse(localStorage.getItem('cart')) || [],
+    priceTotLocal: '',
 });
     
 

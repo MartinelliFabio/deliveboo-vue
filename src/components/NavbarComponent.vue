@@ -36,9 +36,11 @@
                                 <i class="fa fa-search" aria-hidden="true"></i>
                             </button>
                         </form>
-                        <a href="" class="order_online">
-                            Order Online
-                        </a>
+                        <router-link to="/checkout" @click="priceTotLocal()">
+                            <a href="" class="order_online">
+                                Order Online
+                            </a>
+                        </router-link>
                     </div>
                 </div>
             </nav>
@@ -67,10 +69,19 @@ export default {
                     label: "Chi Siamo",
                     routeName: "about",
                 },
-              
             ]
         }
     },
+    methods: {
+        priceTotLocal() {
+            store.priceTotLocal = this.totCart;
+        }
+    },
+    computed: {
+        totCart() {
+            return (store.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0)).toFixed(2);
+        },
+    }
 }
 </script>
 

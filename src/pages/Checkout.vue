@@ -1,0 +1,117 @@
+<template>
+    <HeroComponent :isVisible="false"></HeroComponent>
+
+    <section class="container">
+        <div>
+        <h1>Checkout</h1>
+        <form @submit.prevent="submitForm">
+            <div>
+                <label for="name">Nome</label>
+                <input type="text" id="name" name="name" v-model="customerName" required>
+            </div>
+            <div>
+                <label for="surname">Cognome</label>
+                <input type="text" id="surname" name="surname" v-model="customerSurname" required>
+            </div>
+            <div>
+                <label for="email">Mail</label>
+                <input type="email" id="email" name="email" v-model="customerEmail" required>
+            </div>
+            <div>
+                <label for="phone">Telefono</label>
+                <input type="text" id="phone" name="phone" v-model="customerPhone" required>
+            </div>
+            <div>
+                <label for="address">Indirizzo</label>
+                <input type="text" id="address" name="address" v-model="customerAddress" required>
+            </div>
+            <div>
+                <label for="price_tot">Importo Totale</label>
+                <span>{{ store.priceTotLocal }}</span>
+            </div>
+            <button type="submit">Invia ordine</button>
+        </form>
+
+        </div>
+    </section>
+</template>
+
+<script>
+    import { store } from '../store';
+    import HeroComponent from "../components/HeroComponent.vue";
+    export default {
+        components: { HeroComponent },
+        data() {
+            return {
+                store,
+                customerName: "",
+                customerSurname: "",
+                customerEmail: "",
+                customerPhone: "",
+                customerAddress: "",
+                priceTot: 0,
+            };
+        },
+        methods: {
+            submitForm() {
+                // Costruisce l'oggetto "order" con i dati del form
+                const order = {
+                    priceTotLocal: store.priceTotLocal,
+                    name: this.customerName,
+                    surname: this.customerSurname,
+                    email: this.customerEmail,
+                    phone: this.customerPhone,
+                    address: this.customerAddress,
+                    price_tot: this.priceTot,
+                    status: "in attesa di pagamento", // Lo stato del pagamento viene impostato su "in attesa"
+                };
+
+                // Invia l'oggetto "order" al server tramite una richiesta HTTP POST
+                try {
+                    const response = fetch("/api/orders", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify(order),
+                    });
+
+                    // Verifica lo stato della risposta
+                    if (!response.ok) {
+                        throw new Error("Errore nella creazione dell'ordine");
+                    }
+
+                    // Se la risposta è OK, siamo riusciti a creare l'ordine
+                    // Possiamo quindi resettare il form e mostrare un messaggio di conferma
+                    this.customerName = "";
+                    this.customerSurname = "";
+                    this.customerEmail = "";
+                    this.customerAddress = "";
+                    this.customerPhone = "";
+                    this.priceTot = 0;
+                    alert("Il tuo ordine è stato creato con successo!");
+                } catch (error) {
+                    console.error(error);
+                    alert("Si è verificato un errore nella creazione dell'ordine");
+                }
+            },
+        },
+        computed: {
+            getAllCart() {
+                let storage = []
+                let keys = Object.keys(localStorage)
+                for (let i = 0; i < keys.length; i++) {
+                    storage.push(JSON.parse(localStorage.getItem(keys[i])))
+                }
+                return storage;
+            },
+        },
+        mounted() {
+            store.cartItems = this.getAllCart
+        }
+    }
+</script>
+
+<style lang="scss" scoped>
+
+</style>

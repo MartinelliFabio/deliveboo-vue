@@ -55,6 +55,14 @@ export default {
         });
       }
     },
+    getAllCart() {
+      let storage = []
+      let keys = Object.keys(localStorage)
+      for (let i = 0; i < keys.length; i++) {
+        storage.push(JSON.parse(localStorage.getItem(keys[i])))
+      }
+      return storage;
+    },
   },
   methods: {
     getShopkeepers() {
@@ -81,6 +89,8 @@ export default {
   mounted() {
     this.getShopkeepers();
     this.getShopkeeperTypes();
+    store.cartItems = this.getAllCart
+
   },
 };
 </script>
