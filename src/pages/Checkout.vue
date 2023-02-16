@@ -56,6 +56,7 @@
             submitForm() {
                 // Costruisce l'oggetto "order" con i dati del form
                 const order = {
+                    priceTotLocal: store.priceTotLocal,
                     name: this.customerName,
                     surname: this.customerSurname,
                     email: this.customerEmail,
@@ -94,20 +95,20 @@
                     alert("Si è verificato un errore nella creazione dell'ordine");
                 }
             },
-            computed:{
-                getAllCart() {
+        },
+        computed: {
+            getAllCart() {
                 let storage = []
                 let keys = Object.keys(localStorage)
                 for (let i = 0; i < keys.length; i++) {
                     storage.push(JSON.parse(localStorage.getItem(keys[i])))
                 }
                 return storage;
-                },
             },
-            mounted(){
-                store.cartItems = this.getAllCart
-            }
         },
+        mounted() {
+            store.cartItems = this.getAllCart
+        }
     }
 </script>
 
