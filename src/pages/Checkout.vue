@@ -1,31 +1,33 @@
 <template>
     <HeroComponent :isVisible="false"></HeroComponent>
+
     <section class="container">
         <div>
+        <h1>Checkout</h1>
         <form @submit.prevent="submitForm">
             <div>
                 <label for="name">Nome</label>
-                <input type="text" id="name" v-model="customerName" required>
+                <input type="text" id="name" name="name" v-model="customerName" required>
             </div>
             <div>
                 <label for="surname">Cognome</label>
-                <input type="text" id="surname" v-model="customerSurname" required>
+                <input type="text" id="surname" name="surname" v-model="customerSurname" required>
             </div>
             <div>
                 <label for="email">Mail</label>
-                <input type="email" id="email" v-model="customerEmail" required>
+                <input type="email" id="email" name="email" v-model="customerEmail" required>
             </div>
             <div>
                 <label for="phone">Telefono</label>
-                <input type="text" id="phone" v-model="customerPhone" required>
+                <input type="text" id="phone" name="phone" v-model="customerPhone" required>
             </div>
             <div>
                 <label for="address">Indirizzo</label>
-                <input type="text" id="address" v-model="customerAddress" required>
+                <input type="text" id="address" name="address" v-model="customerAddress" required>
             </div>
             <div>
                 <label for="price_tot">Importo Totale</label>
-                <input type="text" id="price_tot" :value="{{ store.priceTotLocal }}" disabled>
+                <span>{{ store.priceTotLocal }}</span>
             </div>
             <button type="submit">Invia ordine</button>
         </form>
@@ -51,7 +53,7 @@
             };
         },
         methods: {
-            async submitForm() {
+            submitForm() {
                 // Costruisce l'oggetto "order" con i dati del form
                 const order = {
                     name: this.customerName,
@@ -65,7 +67,7 @@
 
                 // Invia l'oggetto "order" al server tramite una richiesta HTTP POST
                 try {
-                    const response = await fetch("/api/orders", {
+                    const response = fetch("/api/orders", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
@@ -92,6 +94,19 @@
                     alert("Si è verificato un errore nella creazione dell'ordine");
                 }
             },
+            computed:{
+                getAllCart() {
+                let storage = []
+                let keys = Object.keys(localStorage)
+                for (let i = 0; i < keys.length; i++) {
+                    storage.push(JSON.parse(localStorage.getItem(keys[i])))
+                }
+                return storage;
+                },
+            },
+            mounted(){
+                store.cartItems = this.getAllCart
+            }
         },
     }
 </script>
