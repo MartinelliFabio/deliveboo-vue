@@ -3,8 +3,7 @@
 
     <div class="cart container d-flex flex-column py-4">
         <h2 class="text-center my-4 display-4">I tuoi Ordini</h2>
-        <h3>{{  }}</h3>
-        <div class="row mb-5 justify-content-around">
+        <div class="row mb-5 justify-content-around" v-if="store.cartItems.length">
             <div v-for="(item, i) in store.cartItems" class="cart-item col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4">
                 <div class="box">
                     <div class="img-box">
@@ -26,6 +25,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div v-else class="no-orders d-flex align-items-center justify-content-center">
+            <h5 class="text-center">Non ci sono ordini</h5>
         </div>
         <div class="text-center my-5" v-if="store.cartItems.length >= 1"> 
             <button class="button btn-hover me-4" @click="clearCart()">Resetta</button>
@@ -178,6 +180,10 @@ import HeroComponent from "../components/HeroComponent.vue";
         bottom: -15px;
         left: 50%;
         transform: translate(-50%, -50%);
+    }
+
+    .no-orders {
+        height: 500px;
     }
 }
 </style>

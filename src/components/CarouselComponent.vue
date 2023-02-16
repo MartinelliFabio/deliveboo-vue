@@ -1,6 +1,6 @@
 <template>
     <div class="container p-0" style="overscroll-behavior-y: contain;">
-        <Carousel :autoplay="2000" :wrap-around="true">
+        <Carousel :autoplay="2000" :wrap-around="true" :circular="true">
             <Slide v-for="slide in 3" :key="slide">
             <div class="carousel__item">
                 <div class="container">

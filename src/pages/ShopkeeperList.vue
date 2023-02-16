@@ -14,15 +14,11 @@
     </div>
   </div>
 
-    <div class="d-flex justify-content-center mt-5">
-        <h2 class="display-4">Ristoranti</h2>
-      </div>
-
   <div class="row justify-content-around my-cont container">
     <div class="col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4" v-for="shopkeeper in filteredShopkeepers"
       :key="shopkeeper.id">
       <router-link :to="`shopkeepers/${shopkeeper.slug} `">
-        <ShopkeeperCardComponent :shopkeeper="shopkeeper" />
+        <ShopkeeperCardComponent :shopkeeper="shopkeeper" :types="types"/>
       </router-link>
     </div>
   </div>
@@ -85,18 +81,14 @@ export default {
   mounted() {
     this.getShopkeepers();
     this.getShopkeeperTypes();
-    this.store.getTypes();
   },
 };
 </script>
 
 
 <style lang="scss" scoped>
-$white: #ffffff;
-$black: #000000;
-$primary1: #ffbe33;
-$primary2: #222831;
-$textCol: #1f1f1f;
+@use '../assets/partials/variables' as *;
+
 .my-cont {
   // width: 50%;
   margin: auto;
