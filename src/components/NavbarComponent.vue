@@ -36,7 +36,7 @@
                                 <i class="fa fa-search" aria-hidden="true"></i>
                             </button>
                         </form>
-                        <router-link to="/checkout">
+                        <router-link to="/checkout" @click="priceTotLocal()">
                             <a href="" class="order_online">
                                 Order Online
                             </a>

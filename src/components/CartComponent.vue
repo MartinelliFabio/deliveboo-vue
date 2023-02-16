@@ -90,24 +90,24 @@ import HeroComponent from "../components/HeroComponent.vue";
                 store.cartItems = [];
             },
             priceTotLocal(){
-                store.priceTotLocal = this.totCart();
+                store.priceTotLocal = this.totCart;
             }
         },
         computed: {
-            // getAllCart() {
-            //     let storage = []
-            //     let keys = Object.keys(localStorage)
-            //     for (let i = 0; i < keys.length; i++) {
-            //         storage.push(JSON.parse(localStorage.getItem(keys[i])))
-            //     }
-            //     return storage;
-            // },
+            getAllCart() {
+                let storage = []
+                let keys = Object.keys(localStorage)
+                for (let i = 0; i < keys.length; i++) {
+                    storage.push(JSON.parse(localStorage.getItem(keys[i])))
+                }
+                return storage;
+            },
             totCart(){
                 return (store.cartItems.reduce((total, item) => total + (item.price * item.quantity) , 0)).toFixed(2);
             },
         },
         mounted() {
-            // store.cartItems = this.getAllCart
+            store.cartItems = this.getAllCart
         }
     }
 </script>
