@@ -1,13 +1,8 @@
 <template>
   <HeroComponent :isVisible="false"></HeroComponent>
   
-      <h2 class="text-center text-capitalize my-5 display-4">prodotti</h2>
-      <!-- <ul v-if="shopkeeper.products">
-          <li v-for="(item,index) in shopkeeper.products">
-              {{ item.name }}
-          </li>
-      </ul> -->
-
+  <h2 class="text-center text-capitalize my-5 display-4">prodotti</h2>
+  
   <section v-if="shopkeeper" class="food_section layout_padding mb-5">
   <div  v-if="shopkeeper.products" class="container ">
       <div class="row justify-content-around">

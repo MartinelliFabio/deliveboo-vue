@@ -4,10 +4,26 @@ $fa-font-path: "./webfonts";
 @import "@fortawesome/fontawesome-free/scss/brands.scss";
 @import "@fortawesome/fontawesome-free/scss/regular.scss";
 @import "@fortawesome/fontawesome-free/scss/solid.scss";
+@import "../assets/partials/variables";
 
 @import "bootstrap/scss/bootstrap";
 
 @import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&family=Open+Sans:wght@400;600;700&display=swap");
+
+// WEBKIT SCROLLBAR
+
+html::-webkit-scrollbar {
+  width: 9px;
+}
+
+html::-webkit-scrollbar-track {
+  background-color: white;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: $primary2;
+  border-radius: 20px;
+}
 
 * {
   padding: 0;
