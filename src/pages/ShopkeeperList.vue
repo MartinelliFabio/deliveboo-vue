@@ -4,7 +4,11 @@
   <div class="d-flex justify-content-center pt-4">
     <h2 style="font-size: 54px">Ristoranti</h2>
   </div>
-  <!-- <div><LoaderComponent></LoaderComponent></div> -->
+  <div class="text-center d-flex justify-content-center align-items-center fs-5 p-5 h-loader" v-if="isLoading">
+    <LoaderComponent class="absolute-loader"></LoaderComponent>
+  </div>
+
+  <div v-else>
   <div class="container mt-3 d-flex justify-content-center d-flex flex-wrap">
     <div class="form-check ms-2 " v-for="type in types" :key="type.id">
       <input class="form-check-input" type="checkbox" name="types" :value="type.id" :id="type.id" v-model="selectedType"/>
@@ -22,6 +26,7 @@
       </router-link>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -44,6 +49,8 @@ export default {
       shopkeepers: [],
       types: [],
       selectedType: [],
+      isLoading: true,
+    
     };
   },
   computed: {
@@ -78,6 +85,8 @@ export default {
         this.shopkeepers = response.data.results;
         // console.log(response.data.results)
 
+        // this.isLoading = false;
+
       });
     },
 
@@ -93,6 +102,10 @@ export default {
     this.getShopkeeperTypes();
     store.cartItems = this.getAllCart
 
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 850);
+
   },
 };
 </script>
@@ -105,6 +118,14 @@ export default {
   // width: 50%;
   margin: auto;
   margin-top: 2rem;
+}
+
+.h-loader{
+  min-height: 43vh;
+}
+
+.absolute-loader{
+  position: absolute ;
 }
 
 .filters_menu {
