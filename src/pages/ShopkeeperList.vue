@@ -4,22 +4,25 @@
   <div class="d-flex justify-content-center pt-4">
     <h2 style="font-size: 54px">Ristoranti</h2>
   </div>
-
-  <div class="container mt-3 d-flex justify-content-center">
-    <div class="form-check ms-2" v-for="type in types" :key="type.id">
-      <input class="form-check-input" type="checkbox" name="types" :value="type.id" :id="type.id" v-model="selectedType"/>
-      <label class="form-check-label text-capitalize" :for="type.id">{{
-        type.name
-      }}</label>
-    </div>
+  <div class="text-center fs-5 p-5" v-if="isLoading">
+    loading...
   </div>
-
-  <div class="row justify-content-around my-cont container">
-    <div class="col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4" v-for="shopkeeper in filteredShopkeepers"
-      :key="shopkeeper.id">
-      <router-link :to="`shopkeepers/${shopkeeper.slug} `">
-        <ShopkeeperCardComponent :shopkeeper="shopkeeper" :types="types"/>
-      </router-link>
+  <div v-else>
+    <div class="container mt-3 d-flex justify-content-center">
+      <div class="form-check ms-2" v-for="type in types" :key="type.id">
+        <input class="form-check-input" type="checkbox" name="types" :value="type.id" :id="type.id" v-model="selectedType"/>
+        <label class="form-check-label text-capitalize" :for="type.id">{{
+          type.name
+        }}</label>
+      </div>
+    </div>
+    <div class="row justify-content-around my-cont container">
+      <div class="col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4" v-for="shopkeeper in filteredShopkeepers"
+        :key="shopkeeper.id">
+        <router-link :to="`shopkeepers/${shopkeeper.slug} `">
+          <ShopkeeperCardComponent :shopkeeper="shopkeeper" :types="types"/>
+        </router-link>
+      </div>
     </div>
   </div>
 </template>
@@ -42,6 +45,7 @@ export default {
       shopkeepers: [],
       types: [],
       selectedType: [],
+      isLoading: true
     };
   },
   computed: {
@@ -81,6 +85,9 @@ export default {
   mounted() {
     this.getShopkeepers();
     this.getShopkeeperTypes();
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   },
 };
 </script>

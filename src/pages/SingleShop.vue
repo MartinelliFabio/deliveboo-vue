@@ -1,47 +1,46 @@
 <template>
   <HeroComponent :isVisible="false"></HeroComponent>
   
-      <h2 class="text-center text-capitalize my-5 display-4">prodotti</h2>
-      <!-- <ul v-if="shopkeeper.products">
-          <li v-for="(item,index) in shopkeeper.products">
-              {{ item.name }}
-          </li>
-      </ul> -->
+  <h2 class="text-center text-capitalize my-5 display-4">Prodotti</h2>
 
-  <section v-if="shopkeeper" class="food_section layout_padding mb-5">
-  <div  v-if="shopkeeper.products" class="container ">
-      <div class="row justify-content-around">
+  <div class="text-center fs-5 p-5" v-if="isLoading">
+      Loading...
+  </div>
 
-      
-    <div v-for="(item, i) in shopkeeper.products" class="filters-content col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4">
-      <div class="">
-        <div  class="all pizza">
-          <div  class="box">
-            <div>
-              <div class="img-box">
-                <img v-if="(`${item.image}`).includes('products_images')" :src="`${store.imagePath}${item.image}`" class="card-image" />
-                <img v-else=""  :src="`${item.image}`" alt="" />
-              </div>
-              <div class="detail-box">
-                <h5 class="text-capitalize">{{ item.name }}</h5>
-                <p>
-                  {{ item.ingredient }}
-                </p>
-                <div class="options">
-                  <h6 class="me-3">&euro;&nbsp;{{ item.price }}</h6>
-                  <a href="" :disabled="vueLocalStorage.includes(item.slug)" @click.prevent="addToCartId(item)">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                  </a>
+  <div v-else>
+    <section v-if="shopkeeper" class="food_section layout_padding mb-5">
+        <div  v-if="shopkeeper.products" class="container ">
+          <div class="row justify-content-around">
+            <div v-for="(item, i) in shopkeeper.products" class="filters-content col-sm-12 col-lg-6 col-md-12 col-xl-6 col-xxl-4">
+              <div class="">
+                <div  class="all pizza">
+                  <div  class="box">
+                    <div>
+                      <div class="img-box">
+                        <img v-if="(`${item.image}`).includes('products_images')" :src="`${store.imagePath}${item.image}`" class="card-image" />
+                        <img v-else=""  :src="`${item.image}`" alt="" />
+                      </div>
+                      <div class="detail-box">
+                        <h5 class="text-capitalize">{{ item.name }}</h5>
+                        <p>
+                          {{ item.ingredient }}
+                        </p>
+                        <div class="options">
+                          <h6 class="me-3">&euro;&nbsp;{{ item.price }}</h6>
+                          <a href="" :disabled="vueLocalStorage.includes(item.slug)" @click.prevent="addToCartId(item)">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
     </div>
-  </div>
-  </div>
-</section>
 </template>
 
 <script>
@@ -59,7 +58,8 @@ import CartComponent from "../components/CartComponent.vue";
               store,
               shopkeeper: null,
               products: [],
-              vueLocalStorage: ''
+              vueLocalStorage: '',
+              isLoading: true
           }
       },
       watch: {
@@ -86,63 +86,68 @@ import CartComponent from "../components/CartComponent.vue";
         },
       },
       methods: {
-          getShop() {
-              axios.get(`${this.store.apiUrl}/shopkeepers/${this.$route.params.slug}`).then((response) => {
-                // console.log(response.data.results)
-                this.shopkeeper = response.data.results;
-              });
-          },
-          addToCartId(item) {
-            if(localStorage.length) {
-              const keys = Object.keys(localStorage)
-              const shopkeeperId = JSON.parse(localStorage.getItem(keys[0])).shopkeeper_id
-              if(item.shopkeeper_id != shopkeeperId) {
-                this.sendError()
-                return
-              } else {
-                this.addToCart(item)
-                return
-              }
-            }
-            this.addToCart(item)
-          },
-          addToCart(item) {
-            let index = store.cartItems.findIndex(product => product.slug === item.slug);
-            if (index !== -1) {
-              store.cartItems[index].quantity += 1;
-              localStorage.setItem(item.slug, JSON.stringify(store.cartItems[index]));
-              Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Il piatto è stato aggiornato',
-                showConfirmButton: false,
-                timer: 1500
-              });
+        getShop() {
+            axios.get(`${this.store.apiUrl}/shopkeepers/${this.$route.params.slug}`).then((response) => {
+              // console.log(response.data.results)
+              this.shopkeeper = response.data.results;
+            });
+        },
+        addToCartId(item) {
+          if(localStorage.length) {
+            const keys = Object.keys(localStorage)
+            const shopkeeperId = JSON.parse(localStorage.getItem(keys[0])).shopkeeper_id
+            if(item.shopkeeper_id != shopkeeperId) {
+              this.sendError()
+              return
             } else {
-              item.quantity = 1
-              store.cartItems.push(item)
-              localStorage.setItem(item.slug, JSON.stringify(item))
-              Swal.fire({
-                position: 'center',
-                icon: 'success',
-                title: 'Il piatto è stato aggiunto all\'ordine',
-                showConfirmButton: false,
-                timer: 1500
-              });
+              this.addToCart(item)
+              return
             }
-          },
-          sendError() {
+          }
+          this.addToCart(item)
+        },
+        addToCart(item) {
+          let index = store.cartItems.findIndex(product => product.slug === item.slug);
+          if (index !== -1) {
+            store.cartItems[index].quantity += 1;
+            localStorage.setItem(item.slug, JSON.stringify(store.cartItems[index]));
             Swal.fire({
               position: 'center',
-              icon: 'error',
-              title: 'Non puoi ordinare da due ristoranti diversi',
+              icon: 'success',
+              title: 'Il piatto è stato aggiornato',
               showConfirmButton: false,
-              timer: 2000
+              timer: 1500
             });
-          },
-          getStorageKeys() {
-            this.vueLocalStorage = Object.keys(localStorage)
+          } else {
+            item.quantity = 1
+            store.cartItems.push(item)
+            localStorage.setItem(item.slug, JSON.stringify(item))
+            Swal.fire({
+              position: 'center',
+              icon: 'success',
+              title: 'Il piatto è stato aggiunto all\'ordine',
+              showConfirmButton: false,
+              timer: 1500
+            });
           }
+        },
+        sendError() {
+          Swal.fire({
+            position: 'center',
+            icon: 'error',
+            title: 'Non puoi ordinare da due ristoranti diversi',
+            showConfirmButton: false,
+            timer: 2000
+          });
+        },
+        getStorageKeys() {
+          this.vueLocalStorage = Object.keys(localStorage)
+        },
+      mounted(){
+        // setTimeout(() => {
+        this.isLoading = false;
+      // }, 2000);
+      }
     },    
   }
 
