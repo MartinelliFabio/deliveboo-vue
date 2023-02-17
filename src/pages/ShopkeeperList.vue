@@ -8,9 +8,9 @@
   <div class="container mt-3 d-flex justify-content-center d-flex flex-wrap">
     <div class="form-check ms-2 " v-for="type in types" :key="type.id">
       <input class="form-check-input" type="checkbox" name="types" :value="type.id" :id="type.id" v-model="selectedType"/>
-      <label class="form-check-label text-capitalize" :for="type.id">{{
-        type.name
-      }}</label>
+      <label class="form-check-label text-capitalize" :for="type.id">
+        {{ type.name }}
+      </label>
     </div>
   </div>
 
