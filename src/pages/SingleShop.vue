@@ -70,11 +70,7 @@ import CartComponent from "../components/CartComponent.vue";
           deep: true
         }
       },
-      mounted() {
-        this.getShop();
-        store.cartItems = this.getAllCart
-        this.getStorageKeys()
-      },
+      
       computed: {
         getAllCart() {
           let storage = []
@@ -145,10 +141,13 @@ import CartComponent from "../components/CartComponent.vue";
         },
       },
       mounted() {
+        this.getShop();
+        store.cartItems = this.getAllCart
+        this.getStorageKeys()
         setTimeout(() => {
-        this.isLoading = false;
-        },  2000);
-      },    
+          this.isLoading = false;
+        }, 2000);
+      },
   };
 
 </script>
