@@ -66,28 +66,29 @@
                     status: "in attesa di pagamento", // Lo stato del pagamento viene impostato su "in attesa"
                 }
                 // Invia l'oggetto "order" al server tramite una richiesta HTTP POST
-                axios.post(`${ store.apiUrl }/orders`, order, {headers : {"Content-Type": "multipart/form-data" }})
+                axios.post(`${ store.apiUrl }/purchase`, order, {headers : {"Content-Type": "multipart/form-data" }})
                 .then((response)=>{ 
-                    console.log(response.order.results)
+                    // console.log(response.order.results)
                     console.log(response.data.order)
+
+                    // Verifica lo stato della risposta
+                    if (!response.ok) {
+                        throw new Error("Errore nella creazione dell'ordine");
+                    }
+                    // Se la risposta è OK, siamo riusciti a creare l'ordine
+                    // Possiamo quindi resettare il form e mostrare un messaggio di conferma
+                    this.customerName = "";
+                    this.customerSurname = "";
+                    this.customerEmail = "";
+                    this.customerAddress = "";
+                    this.customerPhone = "";
+                    this.priceTot = 0;
+                    alert("Il tuo ordine è stato creato con successo!");
                 })
                 .catch((error) => {
                     console.error(error);
                     alert("Si è verificato un errore nella creazione dell'ordine");
-                })
-                // Verifica lo stato della risposta
-                if (!response.ok) {
-                    throw new Error("Errore nella creazione dell'ordine");
-                }
-                // Se la risposta è OK, siamo riusciti a creare l'ordine
-                // Possiamo quindi resettare il form e mostrare un messaggio di conferma
-                this.customerName = "";
-                this.customerSurname = "";
-                this.customerEmail = "";
-                this.customerAddress = "";
-                this.customerPhone = "";
-                this.priceTot = 0;
-                alert("Il tuo ordine è stato creato con successo!");
+                });
             },
         },
         computed: {
