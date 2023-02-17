@@ -5,7 +5,7 @@
     <h2 style="font-size: 54px">Ristoranti</h2>
   </div>
   <div class="text-center fs-5 p-5" v-if="isLoading">
-    loading...
+    Loading...
   </div>
   <div v-else>
     <div class="container mt-3 d-flex justify-content-center">

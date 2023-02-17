@@ -143,13 +143,13 @@ import CartComponent from "../components/CartComponent.vue";
         getStorageKeys() {
           this.vueLocalStorage = Object.keys(localStorage)
         },
-      mounted(){
-        // setTimeout(() => {
+      },
+      mounted() {
+        setTimeout(() => {
         this.isLoading = false;
-      // }, 2000);
-      }
-    },    
-  }
+        },  2000);
+      },    
+  };
 
 </script>
 
