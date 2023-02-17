@@ -4,7 +4,7 @@
     <section class="container">
         <div>
         <h1>Checkout</h1>
-        <form @submit.prevent="submitForm">
+        <form @submit.prevent="submitForm()">
             <div>
                 <label for="name">Nome</label>
                 <input type="text" id="name" name="name" v-model="customerName" required>
@@ -27,7 +27,7 @@
             </div>
             <div>
                 <label for="price_tot">Importo Totale</label>
-                <span>{{ store.priceTotLocal }}</span>
+                <span>{{ totCart }}</span>
             </div>
             <button type="submit">Invia ordine</button>
         </form>
@@ -37,6 +37,7 @@
 </template>
 
 <script>
+    import axios from "axios";
     import { store } from '../store';
     import HeroComponent from "../components/HeroComponent.vue";
     export default {
@@ -49,37 +50,32 @@
                 customerEmail: "",
                 customerPhone: "",
                 customerAddress: "",
-                priceTot: 0,
             };
         },
         methods: {
             submitForm() {
                 // Costruisce l'oggetto "order" con i dati del form
-                const order = {
-                    priceTotLocal: store.priceTotLocal,
+                const data = {
                     name: this.customerName,
                     surname: this.customerSurname,
                     email: this.customerEmail,
                     phone: this.customerPhone,
                     address: this.customerAddress,
-                    price_tot: this.priceTot,
+                    price_tot: this.totCart,
+                    cart: store.cartItems,
                     status: "in attesa di pagamento", // Lo stato del pagamento viene impostato su "in attesa"
-                };
-
-                // Invia l'oggetto "order" al server tramite una richiesta HTTP POST
-                try {
-                    const response = fetch("/api/orders", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify(order),
-                    });
+                }
+                // Invia l'oggetto "data" al server tramite una richiesta HTTP POST
+                axios.post(`${ store.apiUrl }/purchase`, data, {headers : {"Content-Type": "multipart/form-data" }})
+                .then((response)=>{ 
+                    console.log(response.data)
+                    console.log(response.data.results)
+                    console.log(response.data.order)
 
                     // Verifica lo stato della risposta
-                    if (!response.ok) {
-                        throw new Error("Errore nella creazione dell'ordine");
-                    }
+                    // if (!response.ok) {
+                    //     throw new Error("Errore nella creazione dell'ordine");
+                    // }
 
                     // Se la risposta è OK, siamo riusciti a creare l'ordine
                     // Possiamo quindi resettare il form e mostrare un messaggio di conferma
@@ -88,13 +84,18 @@
                     this.customerEmail = "";
                     this.customerAddress = "";
                     this.customerPhone = "";
-                    this.priceTot = 0;
+                    localStorage.clear();
+                    store.cartItems = [];
                     alert("Il tuo ordine è stato creato con successo!");
-                } catch (error) {
+                })
+                .catch((error) => {
                     console.error(error);
                     alert("Si è verificato un errore nella creazione dell'ordine");
-                }
+                });
             },
+            priceTotLocal() {
+                store.priceTotLocal = this.totCart;
+            }
         },
         computed: {
             getAllCart() {
@@ -104,6 +105,9 @@
                     storage.push(JSON.parse(localStorage.getItem(keys[i])))
                 }
                 return storage;
+            },
+            totCart() {
+                return (store.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0)).toFixed(2);
             },
         },
         mounted() {
