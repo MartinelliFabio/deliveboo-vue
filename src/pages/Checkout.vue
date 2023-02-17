@@ -68,8 +68,8 @@
                 // Invia l'oggetto "order" al server tramite una richiesta HTTP POST
                 axios.post(`${ store.apiUrl }/orders`, order, {headers : {"Content-Type": "multipart/form-data" }})
                 .then((response)=>{ 
-                    console.log(response.order)
-                    return response.order
+                    console.log(response.order.results)
+                    console.log(response.data.order)
                 })
                 .catch((error) => {
                     console.error(error);
