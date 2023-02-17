@@ -86,6 +86,7 @@ import CartComponent from "../components/CartComponent.vue";
             axios.get(`${this.store.apiUrl}/shopkeepers/${this.$route.params.slug}`).then((response) => {
               // console.log(response.data.results)
               this.shopkeeper = response.data.results;
+              this.isLoading = false;
             });
         },
         addToCartId(item) {
@@ -142,11 +143,8 @@ import CartComponent from "../components/CartComponent.vue";
       },
       mounted() {
         this.getShop();
-        store.cartItems = this.getAllCart
-        this.getStorageKeys()
-        setTimeout(() => {
-          this.isLoading = false;
-        }, 2000);
+        store.cartItems = this.getAllCart;
+        this.getStorageKeys();
       },
   };
 

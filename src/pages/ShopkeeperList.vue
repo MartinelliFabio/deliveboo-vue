@@ -71,7 +71,7 @@ export default {
       axios.get(this.store.apiUrl + "/shopkeepers", data).then((response) => {
         this.shopkeepers = response.data.results;
         console.log(response.data.results)
-
+        this.isLoading = false;
       });
     },
 
@@ -79,15 +79,16 @@ export default {
       axios.get(this.store.apiUrl + "/types").then((response) => {
         this.types = response.data.results;
         console.log(response.data.results)
+        this.isLoading = false;
       });
     },
   },
   mounted() {
     this.getShopkeepers();
     this.getShopkeeperTypes();
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 2000);
+    // setTimeout(() => {
+    //   this.isLoading = false;
+    // }, 500);
   },
 };
 </script>
