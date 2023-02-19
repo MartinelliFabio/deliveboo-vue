@@ -2,8 +2,8 @@
 <template>
   <HeroComponent :isVisible="false"></HeroComponent>
 
-  <div class="d-flex justify-content-center pt-4">
-    <h2 style="font-size: 54px">Ristoranti</h2>
+  <div class="d-flex justify-content-center">
+    <h2 class="my-5 display-4">Ristoranti</h2>
   </div>
   <div class="text-center d-flex justify-content-center align-items-center fs-5 p-5 h-loader" v-if="isLoading">
     <LoaderComponent class="absolute-loader"></LoaderComponent>

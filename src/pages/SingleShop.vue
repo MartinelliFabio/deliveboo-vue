@@ -10,6 +10,11 @@
   <div v-else>
     <section v-if="shopkeeper" class="food_section layout_padding mb-5">
       <div v-if="shopkeeper.products" class="container">
+        <div class="back">
+          <router-link :to="'/shopkeepers'">
+            <a href="#"><i class="fa-solid fa-arrow-left"></i> Torna ai ristoranti</a>
+          </router-link>
+        </div>
         <div class="row justify-content-around">
           <div
             v-for="(item, i) in shopkeeper.products"
@@ -183,6 +188,37 @@ a:hover,
 a:focus {
   color: initial;
 }
+
+.food_section {
+  a {
+      color: inherit;
+      text-decoration: none;
+  }
+
+  a {
+      background:
+          linear-gradient(
+              to right,
+                  rgba(100, 200, 200, 1),
+                  rgba(100, 200, 200, 1)
+              ),
+          linear-gradient(
+              to right,
+                  rgba(255, 0, 0, 1),
+                  rgba(255, 0, 180, 1),
+                  rgba(0, 100, 200, 1)
+          );
+          background-size: 100% 3px, 0 3px;
+          background-position: 100% 100%, 0 100%;
+          background-repeat: no-repeat;
+          transition: background-size 400ms;
+      }
+
+  a:hover {
+      background-size: 0 3px, 100% 3px;
+  }
+}
+
 .filters_menu {
   padding: 0;
   display: flex;

@@ -3,48 +3,53 @@
 
     <section class="container">
         <div>
-        <h1>Checkout</h1>
-        <form @submit.prevent="submitForm()">
-            <div>
-                <label for="name">Nome</label>
-                <input type="text" id="name" name="name" v-model="customerName" required>
+            <h1 class="text-center my-5 display-4">Checkout</h1>
+            <!-- <h2>Controlla il tuo ordine da {{ shopkeeper.name }}</h2> -->
+            <form @submit.prevent="submitForm()">
+                <div>
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" name="name" v-model="customerName" required>
+                </div>
+                <div>
+                    <label for="surname">Cognome</label>
+                    <input type="text" id="surname" name="surname" v-model="customerSurname" required>
+                </div>
+                <div>
+                    <label for="email">Mail</label>
+                    <input type="email" id="email" name="email" v-model="customerEmail" required>
+                </div>
+                <div>
+                    <label for="phone">Telefono</label>
+                    <input type="text" id="phone" name="phone" v-model="customerPhone" required>
+                </div>
+                <div>
+                    <label for="address">Indirizzo</label>
+                    <input type="text" id="address" name="address" v-model="customerAddress" required>
+                </div>
+                <div>
+                    <label for="price_tot">Importo Totale</label>
+                    <span>{{ totCart }}</span>
+                </div>
+                <button type="submit">Invia ordine</button>
+            </form>
+            <div class="mt-5">
+                <PaymentComponent/>
             </div>
-            <div>
-                <label for="surname">Cognome</label>
-                <input type="text" id="surname" name="surname" v-model="customerSurname" required>
-            </div>
-            <div>
-                <label for="email">Mail</label>
-                <input type="email" id="email" name="email" v-model="customerEmail" required>
-            </div>
-            <div>
-                <label for="phone">Telefono</label>
-                <input type="text" id="phone" name="phone" v-model="customerPhone" required>
-            </div>
-            <div>
-                <label for="address">Indirizzo</label>
-                <input type="text" id="address" name="address" v-model="customerAddress" required>
-            </div>
-            <div>
-                <label for="price_tot">Importo Totale</label>
-                <span>{{ totCart }}</span>
-            </div>
-            <button type="submit">Invia ordine</button>
-        </form>
-
         </div>
     </section>
 </template>
 
 <script>
-    import axios from "axios";
-    import { store } from '../store';
-    import HeroComponent from "../components/HeroComponent.vue";
+import axios from "axios";
+import { store } from '../store';
+import HeroComponent from "../components/HeroComponent.vue";
+import PaymentComponent from "../components/PaymentComponent.vue";
     export default {
-        components: { HeroComponent },
+        components: { HeroComponent, PaymentComponent },
         data() {
             return {
                 store,
+                shopkeeper: null,
                 customerName: "",
                 customerSurname: "",
                 customerEmail: "",
@@ -53,6 +58,16 @@
             };
         },
         methods: {
+            getShop() {
+                axios
+                    .get(`${this.store.apiUrl}/shopkeepers/${this.$route.params.slug}`)
+                    .then((response) => {
+                        // console.log(response.data.results)
+                        this.shopkeeper = response.data.results;
+
+                        // this.isLoading = false;
+                    });
+            },
             submitForm() {
                 // Costruisce l'oggetto "order" con i dati del form
                 const data = {
@@ -111,7 +126,15 @@
             },
         },
         mounted() {
-            store.cartItems = this.getAllCart
+            store.cartItems = this.getAllCart;
+            this.getShop();
+        },
+        watch: {
+            'store.saveOrder': {
+                handler() {
+                    this.submitForm()
+                }
+            }
         }
     }
 </script>

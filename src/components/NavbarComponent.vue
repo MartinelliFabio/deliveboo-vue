@@ -36,11 +36,13 @@
                                 <i class="fa fa-search" aria-hidden="true"></i>
                             </button>
                         </form>
-                        <router-link to="/checkout" @click="priceTotLocal()">
-                            <a href="" class="order_online">
-                                Order Online
-                            </a>
-                        </router-link>
+                        <div v-if="store.cartItems.length">
+                            <router-link to="/checkout" @click="priceTotLocal()">
+                                <a href="" class="order_online">
+                                    Order Online
+                                </a>
+                            </router-link>
+                        </div>
                     </div>
                 </div>
             </nav>
