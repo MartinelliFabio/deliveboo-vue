@@ -1,6 +1,6 @@
 <template>
     <div class="container p-0" style="overscroll-behavior-y: contain;">
-        <Carousel :autoplay="2000" :wrap-around="true" :circular="true">
+        <Carousel :autoplay="4000" :wrap-around="true" :circular="true">
             <Slide v-for="slide in 3" :key="slide">
             <div class="carousel__item">
                 <div class="container">
@@ -14,7 +14,9 @@
                                     unde. Tempora ex doloremque, labore, sunt repellat dolore, iste magni quos nihil ducimus libero ipsam.
                                 </p>
                                 <div class="btn-box">
-                                    <a class="btn-menu">Go to Menu</a>
+                                <router-link :to="`shopkeepers`">
+                                    <a href="" class="btn-menu">Vai ai Ristoranti</a>
+                                </router-link> 
                                 </div>
                             </div>
                         </div>
@@ -71,18 +73,18 @@ h1 {
 
             p {
                 font-size: 14px;
+                margin-bottom: 40px;
             }
 
             a {
                 display: inline-block;
-                padding: 10px 45px;
+                padding: 8px 16px;
                 background-color: $yellow;
                 color: $white;
                 border-radius: 45px;
                 -webkit-transition: all 0.3s;
                 transition: all 0.3s;
                 border: none;
-                margin-top: 10px;
                 cursor: pointer;
             }
         }
@@ -93,7 +95,6 @@ h1 {
         flex-direction: column;
         align-items: flex-start;
     }
-
     .carousel__pagination {
         padding: 0 10px;
         align-items: center;
@@ -102,6 +103,5 @@ h1 {
             margin-right: 20px;
         }
     }
-
 }
 </style>

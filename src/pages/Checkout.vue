@@ -97,7 +97,7 @@ import Swal from 'sweetalert2';
                     address: this.customerAddress,
                     price_tot: this.totCart,
                     cart: store.cartItems,
-                    status: 'in attesa', // Lo stato del pagamento viene impostato su "in attesa"
+                    status: 'Pagato', // Lo stato del pagamento viene impostato su "pagato"
                 }
                 // Invia l'oggetto "data" al server tramite una richiesta HTTP POST
                 axios.post(`${ store.apiUrl }/purchase`, data, {headers : {"Content-Type": "multipart/form-data" }})
@@ -165,6 +165,7 @@ import Swal from 'sweetalert2';
                     email: this.customerEmail,
                     phone: this.customerPhone,
                     address: this.customerAddress,
+                    status: 'In attesa del pagamento', // Lo stato del pagamento viene impostato su "in attesa del pagamento"
                 }
                 if (check) {
                     axios.post(`${store.apiUrl}/checkform`, data, { headers: { "Content-Type": "multipart/form-data" } }).then((response) => {
