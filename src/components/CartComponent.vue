@@ -3,7 +3,6 @@
     <div class="cart container d-flex flex-column py-4">
         <h2 class="text-center my-4 display-4">Il tuo Ordine</h2>
         <div class="row my-5 justify-content-around" v-if="store.cartItems.length">
-            <!-- <h3>{{ store.cartItems.shopkeeper_id }}</h3> -->
             <div class="back mb-5" v-if="shopkeeper">
                 <router-link :to="`shopkeepers/${shopkeeper.slug}`">
                     <a href="#"><i class="fa-solid fa-arrow-left"></i> Torna ai prodotti</a>
@@ -13,30 +12,32 @@
                     <thead>
                         <tr>
                             <th>Quantità</th>
-                            <th>Immagine</th>
-                            <th>Prodotto</th>
-                            <th>Ingredienti</th>
-                            <th>Prezzo cad.</th>
+                            <th class="text-center">Immagine</th>
+                            <th class="text-center">Prodotto</th>
+                            <th class="text-center">Ingredienti</th>
+                            <th class="text-end">Prezzo cad.</th>
                         </tr>
                     </thead>
                     <tbody v-for="(item, i) in store.cartItems">
                         <tr>
-                            <td class="container-fluid w-25">
-                                <button class="button p-3" @click="decrementQ(item, i)"> - </button>
+                            <td class="">
+                                <button class="button add-subtract" @click="decrementQ(item, i)"> - </button>
                                 <span class="mx-3 fs-5">{{ item.quantity }}</span>
-                                <button class="button p-3" @click="incrementQ(item, i)"> + </button>
+                                <button class="button add-subtract" @click="incrementQ(item, i)"> + </button>
                             </td>
-                            <td class="container-fluid w-25">
-                                <img v-if="(`${item.image}`).includes('products_images')" :src="`${store.imagePath}${item.image}`" class="card-image image-fluid" />
-                                <img v-else="" :src="`${item.image}`" alt="" />
+                            <td class="">
+                                <div class="img-box">
+                                    <img v-if="(`${item.image}`).includes('products_images')" :src="`${store.imagePath}${item.image}`" class="cart-img" />
+                                    <img v-else :src="`${item.image}`" alt="" class="cart-img" />
+                                </div>
                             </td>
-                            <td class="text-capitalize container-fluid w-25">
+                            <td class="text-capitalize text-center">
                                 {{ item.name }}
                             </td>
-                            <td class="container-fluid w-25">
+                            <td class="text-capitalize ingredients">
                                 {{ item.ingredient }}
                             </td>
-                            <td class="container-fluid w-25">
+                            <td class="text-end">
                                 € {{ item.price }}
                             </td>
                         </tr>
@@ -44,7 +45,7 @@
                     <tfoot>
                         <tr>
                             <th colspan="4"></th>
-                            <th>Tot : €{{ totCart }}</th>
+                            <th>Totale carrello: €{{ totCart }}</th>
                         </tr>
                     </tfoot>
                 </table>
@@ -212,6 +213,10 @@ import Swal from 'sweetalert2';
 <style lang="scss" scoped>
 @use '../assets/partials/variables' as *;
 .cart {
+
+    .img-box {
+        width: 15rem;
+    }
     
     .back {
         a {
@@ -249,7 +254,7 @@ import Swal from 'sweetalert2';
         border: 1px solid $black;
         border-radius: 15px;
         box-sizing: border-box;
-        color: #FFFFFF;
+        color: $primary2;
         cursor: pointer;
         display: inline-block;
         font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -282,6 +287,10 @@ import Swal from 'sweetalert2';
             box-shadow: none;
             transform: translateY(0);
         }
+    }
+
+    .add-subtract {
+        font-size: 20px;
     }
 
     .btn-hover {

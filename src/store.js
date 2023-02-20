@@ -50,8 +50,9 @@ export const store = reactive({
     cart: [],
     cartItems: JSON.parse(localStorage.getItem('cart')) || [],
     priceTotLocal: '',
-    paymentStatus: null,
+    paymentStatus: '',
     saveOrder: false,
+    loading: false
 });
     
 
