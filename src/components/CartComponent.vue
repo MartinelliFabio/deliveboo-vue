@@ -4,9 +4,6 @@
         <h2 class="text-center my-4 display-4">Il tuo Ordine</h2>
         <div class="row my-5 justify-content-around" v-if="store.cartItems.length">
             <div class="back mb-5" v-if="shopkeeper">
-                <router-link :to="`shopkeepers/${shopkeeper.slug}`">
-                    <a href="#"><i class="fa-solid fa-arrow-left"></i> Torna ai prodotti</a>
-                </router-link> 
             </div>
                 <table>
                     <thead>
