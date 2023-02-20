@@ -5,7 +5,7 @@
           `braintree.dropin.create` inside a form will make layout and flow
           easier to manage -->
         <div id="dropin-container"></div>
-        <input type="submit" />
+        <button type="submit" :disabled="store.loading" class="button">{{ store.loading ? 'Attendi...' : 'Paga' }}</button>
         <input type="hidden" id="nonce" name="payment_method_nonce"/>
       </form>
     </body>
@@ -34,6 +34,18 @@ import { store } from '../store';
                 if (error) console.error(error);
                     form.addEventListener('submit', event => {
                         event.preventDefault();
+
+                        if (!store.cartItems.length) {
+                            Swal.fire({
+                                position: 'center',
+                                icon: 'error',
+                                title: 'Il carrello è vuoto',
+                                showConfirmButton: false,
+                                timer: 1500
+                            });
+                            return
+                        }
+                        store.loading = true;
 
                         dropinInstance.requestPaymentMethod((error, payload) => {
                             if (error) console.error(error);
@@ -64,5 +76,47 @@ import { store } from '../store';
 </script>
 
 <style lang="scss" scoped>
+@use '../assets/partials/variables' as *;
+
+.button {
+    appearance: none;
+    background-color: $primary1;
+    border: 1px solid $black;
+    border-radius: 15px;
+    box-sizing: border-box;
+    color: $primary2;
+    cursor: pointer;
+    display: inline-block;
+    font-family: Roobert, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 16px;
+    font-weight: 600;
+    line-height: normal;
+    margin: 0;
+    min-width: 0;
+    outline: none;
+    padding: 8px 18px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 300ms cubic-bezier(.23, 1, 0.32, 1);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    // width: 100%;
+    will-change: transform;
+
+    &:disabled {
+        pointer-events: none;
+    }
+
+    &:hover {
+        box-shadow: rgba(0, 0, 0, 0.8) 0 8px 15px;
+        transform: translateY(-2px);
+    }
+
+    &:active {
+        box-shadow: none;
+        transform: translateY(0);
+    }
+}
 
 </style>
